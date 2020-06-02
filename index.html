@@ -12,14 +12,12 @@
 <script type="text/javascript">
 
 var Connect = new XMLHttpRequest();
-Connect.open("GET", "log.xml", "true");
+Connect.open("GET", "./log.xml", false);
 Connect.setRequestHeader("Content-Type", "text/xml");
-Connect.send(null)
+Connect.send(null);
 
-Connect.onLoad = function () {
-	console.log (this.responseXML);
-	console.log('hello');
-}
+var xmlDoc = Connect.responseXML;
+var poems = xmlDoc.childNodes[0];
 
 let mainDisplay = document.getElementById('main-display');
 let button = document.getElementById('test-button');
