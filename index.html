@@ -2,47 +2,42 @@
 
 <head>
 <title> CyberStevens </title>
-<xml id="poemXML" src="log.xml"></xml>
 </head>
 
 <body>
 
+<h1 id="title-display"></h1>
 <p id="main-display"></p>
-<button id="test-button" onclick="clickfunction()">Test Button</button>
 
 <script type="text/javascript">
+var poemList = [];
 
-/*var xmlReq = new XMLHttpRequest();
+var mainDisplay = document.getElementById('main-display');
+var titleDisplay = document.getElementById('title-display');
+
+var xmlReq = new XMLHttpRequest();
 xmlReq.open("GET", "./log.xml", true);
 xmlReq.send();
 
 xmlReq.onload = function () {
 	var xmlDoc = xmlReq.responseXML;
-	var poems = xmlDoc.childNodes[0];
+	var poems = xmlDoc.getElementsByTagName("poem");
 
-	for (p in poems) {
-		console.log('*--------------------*');
-		console.log(p);
+	for (var i = 0; i < poems.length; i ++) {
+		poemList.push({
+			title: xmlDoc.getElementsByTagName("title")[i].childNodes[0].nodeValue,
+			text: xmlDoc.getElementsByTagName("text")[1].childNodes[0].nodeValue
+		});
 	}
-}*/
 
-var xmlDoc = document.getElementById("poemXML").XMLDocument;
-console.log(xmlDoc);
-
-var poemList = [];
-
-let mainDisplay = document.getElementById('main-display');
-let button = document.getElementById('test-button');
-
-function clickfunction () {
-	mainDisplay.innerHTML = "AAAAAAA";
-	console.log('aaa');
+	console.log(poemList[1]);
 }
-
-mainDisplay.innerHTML = "testing";
-
+	
 </script>
 
 </body>
 
 </html>
+
+
+
