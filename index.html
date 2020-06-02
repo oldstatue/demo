@@ -11,10 +11,10 @@
 
 <script type="text/javascript">
 
-var Connect = new XMLHttpRequest();
-Connect.open("GET", "./log.xml", false);
-Connect.setRequestHeader("Content-Type", "text/xml");
-Connect.send(null);
+var xmlRew = new XMLHttpRequest();
+xmlReq.open("GET", "./log.xml", true);
+xmlReq.setRequestHeader("Content-Type", "text/xml");
+xmlReq.send(null);
 
 var xmlDoc = Connect.responseXML;
 var poems = xmlDoc.childNodes[0];
