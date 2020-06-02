@@ -33,7 +33,6 @@ xmlReq.onload = function () {
 		poemList.push({
 			title: xmlDoc.getElementsByTagName("title")[i].childNodes[0].nodeValue,
 			text: xmlDoc.getElementsByTagName("text")[i].childNodes[0].nodeValue,
-			expand: false
 		});
 	}
 
@@ -47,6 +46,7 @@ xmlReq.onload = function () {
 
 		let newTitle = document.createElement('a');
 		newTitle.innerHTML = p.title;
+		newTitle.href = "#";
 		newContainer.appendChild(newTitle);
 
 		newContainer.appendChild(document.createElement('br'));
@@ -58,13 +58,13 @@ xmlReq.onload = function () {
 		newContainer.appendChild(newText);
 
 		newTitle.onclick = function () {
-			if (p.expand) {
-				document.getElementById(newID).style.display = "none";
-				p.expand = false;
-			} else {
-				document.getElementById(newID).style.display = "block";
-				console.log("hello");
-				p.expand = true;
+			textEl = document.getElementById(newID);
+			if (textEl.style.display == "block") {
+				console.log("disappear");
+				textEl.style.display = "none";
+			} else if (textEl.style.display == "none") {
+				console.log("show");
+				textEl.style.display = "block";
 			}
 		}
 
