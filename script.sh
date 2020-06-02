@@ -22,7 +22,7 @@ while read p; do
 	echo '<text>' >> $o
 
 	awk '/<div style="text-indent: -1em; padding-left: 1em;">/ {split($0,a,"</div>")} END {for (i in a) {print a [i]}}' $i | \
-		sed 's/<div style=\"text-indent: -1em; padding-left: 1em;\">//' | sed 's/</\&lt;/' | sed 's/>/\&gt;/' | sed 's/\r//' >> $o
+		sed 's/<div style=\"text-indent: -1em; padding-left: 1em;\">//' | sed 's/</\&lt;/' | sed 's/>/\&gt;/' | sed 's/\xc2\xa0//g' | sed 's/\r//g'  >> $o
 
 	echo '</text>' >> $o
 	echo '</poem>' >> $o
