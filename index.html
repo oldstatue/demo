@@ -13,11 +13,10 @@
 
 var xmlReq = new XMLHttpRequest();
 xmlReq.open("GET", "./log.xml", true);
-xmlReq.responseType = 'xml';
 xmlReq.send();
 
 xmlReq.onload = function () {
-	var xmlDoc = xmlReq.responseXML;
+	var xmlDoc = xmlReq.response;
 	var poems = xmlDoc.childNodes[0];
 	console.log(poems);
 }
