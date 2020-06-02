@@ -18,7 +18,7 @@ xmlReq.send();
 xmlReq.onload = function () {
 	var xmlDoc = xmlReq.responseXML;
 	var poems = xmlDoc.childNodes[0];
-	console.log(poems);
+	console.log(poems.getElementsByTagName("text"));
 }
 
 let mainDisplay = document.getElementById('main-display');
