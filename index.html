@@ -13,13 +13,14 @@
 
 var xmlReq = new XMLHttpRequest();
 xmlReq.open("GET", "./log.xml", true);
-xmlReq.setRequestHeader("Content-Type", "text/xml");
-xmlReq.send(null);
+xmlReq.responseType = 'xml';
+xmlReq.send();
 
-var xmlDoc = Connect.responseXML;
-var poems = xmlDoc.childNodes[0];
-
-console.log(poems);
+xmlReq.onload = function () {
+	var xmlDoc = xmlReq.responseXML;
+	var poems = xmlDoc.childNodes[0];
+	console.log(poems);
+}
 
 let mainDisplay = document.getElementById('main-display');
 let button = document.getElementById('test-button');
