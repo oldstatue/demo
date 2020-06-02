@@ -6,14 +6,20 @@
 
 <body>
 
-<h1 id="title-display"></h1>
-<p id="main-display"></p>
+<h1 id="title-display">head</h1>
+<p id="main-display">body</p>
+<div id="title-list"></div>
 
 <script type="text/javascript">
 var poemList = [];
 
+function toggleText () {
+	
+}
+
 var mainDisplay = document.getElementById('main-display');
 var titleDisplay = document.getElementById('title-display');
+var titleList = document.getElementById('title-list');
 
 var xmlReq = new XMLHttpRequest();
 xmlReq.open("GET", "./log.xml", true);
@@ -26,11 +32,46 @@ xmlReq.onload = function () {
 	for (var i = 0; i < poems.length; i ++) {
 		poemList.push({
 			title: xmlDoc.getElementsByTagName("title")[i].childNodes[0].nodeValue,
-			text: xmlDoc.getElementsByTagName("text")[1].childNodes[0].nodeValue
+			text: xmlDoc.getElementsByTagName("text")[i].childNodes[0].nodeValue,
+			expand: false
 		});
 	}
 
-	console.log(poemList[1]);
+	var idCount = 0;
+
+	for (var p of poemList) {
+
+		let newID = "text" + idCount;
+
+		let newContainer = document.createElement('div');
+
+		let newTitle = document.createElement('a');
+		newTitle.innerHTML = p.title;
+		newContainer.appendChild(newTitle);
+
+		newContainer.appendChild(document.createElement('br'));
+
+		let newText = document.createElement('p');
+		newText.innerHTML = p.text;
+		newText.id = newID;
+		newText.style.display = "none";
+		newContainer.appendChild(newText);
+
+		newTitle.onclick = function () {
+			if (p.expand) {
+				document.getElementById(newID).style.display = "none";
+				p.expand = false;
+			} else {
+				document.getElementById(newID).style.display = "block";
+				console.log("hello");
+				p.expand = true;
+			}
+		}
+
+		titleList.appendChild(newContainer);
+		
+		idCount ++;
+	}
 }
 	
 </script>
