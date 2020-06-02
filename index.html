@@ -16,7 +16,7 @@ xmlReq.open("GET", "./log.xml", true);
 xmlReq.send();
 
 xmlReq.onload = function () {
-	var xmlDoc = xmlReq.response;
+	var xmlDoc = xmlReq.responseXML;
 	var poems = xmlDoc.childNodes[0];
 	console.log(poems);
 }
