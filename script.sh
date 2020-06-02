@@ -4,6 +4,7 @@
 i=input.html
 
 #output file 
+echo > log.xml
 o=log.xml
 
 echo '<xml>' >> $o
