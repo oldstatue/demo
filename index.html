@@ -1,0 +1,38 @@
+<html>
+
+<head>
+<title> CyberStevens </title>
+</head>
+
+<body>
+
+<p id="main-display"></p>
+<button id="test-button" onclick="clickfunction()">Test Button</button>
+
+<script type="text/javascript">
+
+var Connect = new XMLHttpRequest();
+Connect.open("GET", "log.xml", "true");
+Connect.setRequestHeader("Content-Type", "text/xml");
+Connect.send(null)
+
+Connect.onLoad = function () {
+	console.log (this.responseXML);
+	console.log('hello');
+}
+
+let mainDisplay = document.getElementById('main-display');
+let button = document.getElementById('test-button');
+
+function clickfunction () {
+	mainDisplay.innerHTML = "AAAAAAA";
+	console.log('aaa');
+}
+
+mainDisplay.innerHTML = "testing";
+
+</script>
+
+</body>
+
+</html>
