@@ -1,13 +1,12 @@
 <html>
 
 <head>
+<link rel="stylesheet" type="text/css" href="style.css" />
 <title> CyberStevens </title>
 </head>
 
 <body>
 
-<h1 id="title-display">head</h1>
-<p id="main-display">body</p>
 <div id="title-list"></div>
 
 <script type="text/javascript">
@@ -36,12 +35,7 @@ xmlReq.onload = function () {
 		});
 	}
 
-	var idCount = 0;
-
 	for (var p of poemList) {
-
-		let newID = "text" + idCount;
-
 		let newContainer = document.createElement('div');
 
 		let newTitle = document.createElement('a');
@@ -53,22 +47,22 @@ xmlReq.onload = function () {
 
 		let newText = document.createElement('p');
 		newText.innerHTML = p.text;
-		newText.id = newID;
-		newText.style.display = "none";
+		newText.id = "text-el";
+		//newText.style.display = "none";
+		newText.style.height = "0px";
 		newContainer.appendChild(newText);
 
 		newTitle.onclick = function () {
-			textEl = document.getElementById(newID);
-			if (textEl.style.display == "block") {
-				textEl.style.display = "none";
-			} else if (textEl.style.display == "none") {
-				textEl.style.display = "block";
+			var textEl = this.parentNode.querySelector("#text-el");
+
+			if (textEl.style.height == "0px") {
+				textEl.style.height = textEl.scrollHeight + "px";
+			} else {
+				textEl.style.height = "0px";
 			}
 		}
 
 		titleList.appendChild(newContainer);
-		
-		idCount ++;
 	}
 }
 	
