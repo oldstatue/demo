@@ -1,15 +1,30 @@
 body {
 	background-color: #F6F6F6;
 	font: serif;
+	margin: 20px;
 }
 
 a {
 	color: #4060F0;
-	font-size: 20px;
+	/*font-size: 20px;*/
 	text-decoration: none;
 }
 
-#text-el {
+#text-container {
+	margin: 0px;
 	overflow: hidden;
 	-webkit-transition: 0.5s;
+	/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 * add in cross browser support!
+	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 */
+}
+
+#poem-body {
+	margin-left: 20px;
+}
+
+#title-list {
+	overflow: hidden;
+	-webkit-transition: 50s;
 }

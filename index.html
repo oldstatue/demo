@@ -7,18 +7,28 @@
 
 <body>
 
+<form>
+	<input type="text" id="search-string"></input>
+	<button onclick="filterPoems(document.getElementById('search-string').value)">Search</button>
+</form>
+
 <div id="title-list"></div>
 
 <script type="text/javascript">
-var poemList = [];
 
-function toggleText () {
-	
+function filterPoems (input) {
+	titleList.innerHTML = "";
+
+	var regex = RegExp(input.toLowerCase());
+	for (var p of poemList) {
+		if (regex.test(p.title.toLowerCase())) {
+			titleList.appendChild(p.html);
+		}
+	}
 }
 
-var mainDisplay = document.getElementById('main-display');
-var titleDisplay = document.getElementById('title-display');
 var titleList = document.getElementById('title-list');
+var poemList = [];
 
 var xmlReq = new XMLHttpRequest();
 xmlReq.open("GET", "./log.xml", true);
@@ -43,17 +53,18 @@ xmlReq.onload = function () {
 		newTitle.href = "#";
 		newContainer.appendChild(newTitle);
 
-		newContainer.appendChild(document.createElement('br'));
+		let textContainer = document.createElement('div');
+		textContainer.id = "text-container";
+		textContainer.style.height = "0px";
+		newContainer.appendChild(textContainer);
 
 		let newText = document.createElement('p');
 		newText.innerHTML = p.text;
-		newText.id = "text-el";
-		//newText.style.display = "none";
-		newText.style.height = "0px";
-		newContainer.appendChild(newText);
+		newText.id = "poem-body";
+		textContainer.appendChild(newText);
 
 		newTitle.onclick = function () {
-			var textEl = this.parentNode.querySelector("#text-el");
+			var textEl = this.parentNode.querySelector("#text-container");
 
 			if (textEl.style.height == "0px") {
 				textEl.style.height = textEl.scrollHeight + "px";
@@ -62,10 +73,14 @@ xmlReq.onload = function () {
 			}
 		}
 
-		titleList.appendChild(newContainer);
+		p.html = newContainer;
+	}
+
+	for (var p of poemList) {
+		titleList.appendChild(p.html);
 	}
 }
-	
+
 </script>
 
 </body>
