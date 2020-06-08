@@ -1,7 +1,8 @@
-
 body {
 	background-color: #FFFFFF;
 	font: serif;
+	padding: 0px;
+	margin: 0px;
 }
 
 a {
@@ -12,11 +13,7 @@ a {
 
 #poem-body, #text-container {
 	overflow: hidden;
-	-webkit-transition: 0.5s;
-	/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 * add in cross browser support!
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 */
+	transition: 0.5s;
 }
 
 #poem-container {
@@ -30,7 +27,7 @@ a {
 	margin-left: 20px;
 }
 
-#title-list {
+#main-body {
 	margin-top: 50px;
 	padding: 20px;
 	overflow: hidden;
