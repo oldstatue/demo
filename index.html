@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -7,15 +8,24 @@
 
 <body>
 
-<form>
-	<input type="text" id="search-string"></input>
-	<button onclick="titleFilter = document.getElementById('search-string').value; filterPoems()">Search</button>
-</form>
+<div id="header">
+<div id="form-wrapper">
+	<form style="display: inline; margin-right: 50px;">
+		<p style="display: inline;">Search by title: </p>
+		<input type="text" id="search-string"></input>
+		<button onclick="titleFilter = document.getElementById('search-string').value; filterPoems()">Search</button>
+		<button onclick="titleFilter = ''; document.getElementById('search-string').value = ''; filterPoems()">Clear</button>
+	</form>
 
-<form>
-	<input type="text" id="author-search-string"></input>
-	<button onclick="authorFilter = document.getElementById('author-search-string').value; filterPoems()">Search</button>
-</form>
+	<form style="display: inline; margin-right: 50px">
+		<p style="display: inline;">Search by author: </p>
+		<input type="text" id="author-search-string"></input>
+		<button onclick="authorFilter = document.getElementById('author-search-string').value; filterPoems()">Search</button>
+		<button onclick="authorFilter = ''; document.getElementById('author-search-string').value = ''; filterPoems()">Clear</button>
+	</form>
+	<button style="right: 0px" onclick="authorFilter = ''; titleFilter = ''; document.getElementById('author-search-string').value = ''; document.getElementById('search-string').value = ''; filterPoems()">Clear All</button>
+</div>
+</div>
 
 <div id="title-list"></div>
 
@@ -35,6 +45,7 @@ function filterPoems () {
 		if (authorRegex.test(a.name.toLowerCase())) {
 			let poemDiv = a.html.querySelector('#poem-container');
 			poemDiv.innerHTML = "";
+			poemDiv.style.height = "auto";
 
 			let atLeastOneMatch = false;
 
