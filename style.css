@@ -10,8 +10,7 @@ a {
 	text-decoration: none;
 }
 
-#text-container {
-	margin: 0px;
+#poem-body, #text-container {
 	overflow: hidden;
 	-webkit-transition: 0.5s;
 	/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -20,7 +19,14 @@ a {
 	 */
 }
 
+#poem-container {
+	overflow: hidden;
+	margin-left: 20px;
+}
+
 #poem-body {
+	overflow: hidden;
+	margin: 0px;
 	margin-left: 20px;
 }
 

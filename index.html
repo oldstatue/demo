@@ -9,26 +9,70 @@
 
 <form>
 	<input type="text" id="search-string"></input>
-	<button onclick="filterPoems(document.getElementById('search-string').value)">Search</button>
+	<button onclick="titleFilter = document.getElementById('search-string').value; filterPoems()">Search</button>
+</form>
+
+<form>
+	<input type="text" id="author-search-string"></input>
+	<button onclick="authorFilter = document.getElementById('author-search-string').value; filterPoems()">Search</button>
 </form>
 
 <div id="title-list"></div>
 
 <script type="text/javascript">
 
-function filterPoems (input) {
+var titleFilter = "";
+var authorFilter = "";
+
+function filterPoems () {
 	titleList.innerHTML = "";
 
-	var regex = RegExp(input.toLowerCase());
-	for (var p of poemList) {
-		if (regex.test(p.title.toLowerCase())) {
-			titleList.appendChild(p.html);
+	var titleRegex = RegExp(titleFilter.toLowerCase());
+	var authorRegex = RegExp(authorFilter.toLowerCase());
+
+	for (var a of authorList) {
+	
+		if (authorRegex.test(a.name.toLowerCase())) {
+			let poemDiv = a.html.querySelector('#poem-container');
+			poemDiv.innerHTML = "";
+
+			let atLeastOneMatch = false;
+
+			for (var p of a.poemList) {
+				if (titleRegex.test(p.title.toLowerCase())) {
+					atLeastOneMatch = true;
+					poemDiv.appendChild(p.html);
+					
+				}
+			}
+
+			if (atLeastOneMatch) {
+				titleList.appendChild(a.html);
+			}
 		}
 	}
 }
 
+function getAuthorLastName (name) {
+	let splitName = name.split(" ");
+	return splitName[splitName.length - 1].toLowerCase();
+}
+
+function alphabetise (list, property) {
+	return list.sort(function (a, b) {
+		if (a[property] > b[property]) {
+			return 1;
+		} else if (b[property] > a[property]) {
+			return -1;
+		} 
+		
+		return 0;
+	});
+}
+
 var titleList = document.getElementById('title-list');
 var poemList = [];
+var authorList = [];
 
 var xmlReq = new XMLHttpRequest();
 xmlReq.open("GET", "./log.xml", true);
@@ -39,46 +83,86 @@ xmlReq.onload = function () {
 	var poems = xmlDoc.getElementsByTagName("poem");
 
 	for (var i = 0; i < poems.length; i ++) {
-		poemList.push({
-			author: xmlDoc.getElementsByTagName("author")[i].childNodes[0].nodeValue,
+		let newPoem = {
 			title: xmlDoc.getElementsByTagName("title")[i].childNodes[0].nodeValue,
-			text: xmlDoc.getElementsByTagName("text")[i].childNodes[0].nodeValue,
-		});
-	}
+			text: xmlDoc.getElementsByTagName("text")[i].childNodes[0].nodeValue
+		}
 
-	for (var p of poemList) {
-		let newContainer = document.createElement('div');
+		let foundMatch = false;
+		let testName = xmlDoc.getElementsByTagName("author")[i].childNodes[0].nodeValue;  
 
-		let newTitle = document.createElement('a');
-		newTitle.innerHTML = p.title;
-		newTitle.href = "#";
-		newContainer.appendChild(newTitle);
-
-		let textContainer = document.createElement('div');
-		textContainer.id = "text-container";
-		textContainer.style.height = "0px";
-		newContainer.appendChild(textContainer);
-
-		let newText = document.createElement('p');
-		newText.innerHTML = p.text;
-		newText.id = "poem-body";
-		textContainer.appendChild(newText);
-
-		newTitle.onclick = function () {
-			var textEl = this.parentNode.querySelector("#text-container");
-
-			if (textEl.style.height == "0px") {
-				textEl.style.height = textEl.scrollHeight + "px";
-			} else {
-				textEl.style.height = "0px";
+		for (var a of authorList) {
+			if (a.name == testName) {
+				a.poemList.push(newPoem);
+				foundMatch = true;
 			}
 		}
 
-		p.html = newContainer;
+		if (!foundMatch) {
+			authorList.push({
+				name: testName,
+				lastName: getAuthorLastName(testName),
+				poemList: [newPoem]
+			});
+		}
 	}
 
-	for (var p of poemList) {
-		titleList.appendChild(p.html);
+	authorList = alphabetise(authorList, "lastName");
+
+	for (var a of authorList) {
+
+		a.poemList = alphabetise(a.poemList, "title");
+
+		let newAuthDiv = document.createElement('div');
+
+		let newAuthName = document.createElement('a');
+		newAuthName.innerHTML = a.name;
+		newAuthName.href = "#";
+		newAuthName.style.textDecoration = "underline";
+		newAuthDiv.appendChild(newAuthName);
+
+		let poemDiv = document.createElement('div');
+		poemDiv.id = "poem-container";
+		poemDiv.style.height = "auto";
+		
+		newAuthName.onclick = function () {
+			if (poemDiv.style.height == "0px") {
+				poemDiv.style.height = "auto";
+			} else {	
+				poemDiv.style.height = "0px";
+			}
+		};
+		
+		for (var p of a.poemList) {
+			let newPoemDiv = document.createElement('div');
+
+			let newTitle = document.createElement('a');
+			newTitle.innerHTML = p.title;
+			newTitle.href = "#";
+			newPoemDiv.appendChild(newTitle);
+
+			let newText = document.createElement('p');
+			newText.innerHTML = "<br />" + p.text;
+			newText.id = "poem-body";
+			newText.style.height = "0px";
+			newPoemDiv.appendChild(newText);
+
+			newTitle.onclick = function () {
+				if (newText.style.height == "0px") {
+					newText.style.height = newText.scrollHeight + "px";
+				} else {
+					newText.style.height = "0px";
+				}
+			}
+		
+			p.html = newPoemDiv;
+			poemDiv.appendChild(p.html);
+		}
+
+		newAuthDiv.appendChild(poemDiv);
+		a.html = newAuthDiv;
+		a.poemHtml = poemDiv;
+		titleList.appendChild(a.html);
 	}
 }
 
