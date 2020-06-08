@@ -18,7 +18,7 @@
 	</form>
 
 	<form style="display: inline; margin-right: 50px">
-		<p style="display: inline;">Search by author: </p>
+		<p style="display: inline;">Search by poet: </p>
 		<input type="text" id="author-search-string"></input>
 		<button onclick="authorFilter = document.getElementById('author-search-string').value; filterPoems()">Search</button>
 		<button onclick="authorFilter = ''; document.getElementById('author-search-string').value = ''; filterPoems()">Clear</button>
@@ -52,6 +52,8 @@ function filterPoems () {
 			for (var p of a.poemList) {
 				if (titleRegex.test(p.title.toLowerCase())) {
 					atLeastOneMatch = true;
+					let poemBody = p.html.querySelector('#poem-body');
+					poemBody.style.height = "0px";
 					poemDiv.appendChild(p.html);
 					
 				}
@@ -171,6 +173,7 @@ xmlReq.onload = function () {
 		}
 
 		newAuthDiv.appendChild(poemDiv);
+		newAuthDiv.appendChild(document.createElement('br'));
 		a.html = newAuthDiv;
 		a.poemHtml = poemDiv;
 		titleList.appendChild(a.html);
