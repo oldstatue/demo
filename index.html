@@ -97,7 +97,7 @@
 					}
 				}
 
-				//make sure at there is at least one poem that matches the filters before adding the author to the page
+				//make sure there is at least one poem that matches the filters before adding the author to the page
 				//this prevents displaying an author name when they have no matching poems
 				if (atLeastOneMatch) {
 					mainBody.appendChild(authorList[a].html);
@@ -129,7 +129,7 @@
 				}
 			}
 
-			//if the poet doesn't already exist, create a new poet and add the poem to the new poem 
+			//if the author doesn't already exist, create a new author and add the poem to the new poem 
 			if (!foundMatch) { 
 				let splitName = name.split(" ");
 				let lastName = splitName[splitName.length - 1].toLowerCase();
@@ -178,7 +178,7 @@
 				}
 			};
 		
-			//iteratre through the author's list of poem objects
+			//iterate through the author's list of poem objects
 			for (var p = 0; p  < authorList[a].poemList.length; p++) {
 				//create the root container div for the poem
 				let poemDiv = document.createElement('div');
