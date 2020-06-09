@@ -68,6 +68,7 @@
 
 		for (var a = 0; a < authorList.length; a++) {
 			if (authorRegex.test(authorList[a].name.toLowerCase())) {
+				console.log(authorList[a]);
 				console.log(authorList[a].html);
 				let poemDiv = authorList[a].html.querySelector('#poem-container');
 				console.log(poemDiv);
