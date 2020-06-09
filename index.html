@@ -31,7 +31,7 @@
 <script type="text/javascript">
 	//called on submitting either of the forms
 	function update_filters (filter) {
-		//update the specified filter stirngs with the values in the form
+		//update the specified filter strings with the values in the form
 		if (filter == "author-search") {
 			authorFilter = document.getElementById(filter).value;
 		} else if (filter == "title-search") {
@@ -66,7 +66,7 @@
 		}
 	}
 
-	//clears all displayed poems and adds them back to the page if they match the filters
+	//clear all displayed poems and add them back to the page if they match the filters
 	function filter_poems () {
 		clearElement(mainBody);
 
@@ -243,7 +243,7 @@
 
 	//request the xml document...
 	var xmlReq = new XMLHttpRequest();
-	xmlReq.open("GET", "./log.xml", true);
+	xmlReq.open("GET", "./data.xml", true);
 	xmlReq.send();
 
 	//...and once it's loaded call the functions to read the poem data and create the html
