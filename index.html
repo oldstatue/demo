@@ -2,8 +2,8 @@
 <html>
 
 <head>
-<link rel="stylesheet" type="text/css" href="style.css" />
-<title> Poem Demo </title>
+<link rel="stylesheet" type="text/css" href="res/style.css" />
+<title>Demo Project</title>
 </head>
 
 <body>
@@ -243,7 +243,7 @@
 
 	//request the xml document...
 	var xmlReq = new XMLHttpRequest();
-	xmlReq.open("GET", "./data.xml", true);
+	xmlReq.open("GET", "./res/data.xml", true);
 	xmlReq.send();
 
 	//...and once it's loaded call the functions to read the poem data and create the html
@@ -255,6 +255,3 @@
 </body>
 
 </html>
-
-
-

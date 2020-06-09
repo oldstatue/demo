@@ -4,8 +4,8 @@
 i=input.html
 
 #output file 
-echo > data.xml
-o=data.xml
+echo > res/data.xml
+o=res/data.xml
 
 echo '<xml>' >> $o
 
@@ -19,7 +19,7 @@ while read p; do
 	echo '<author>' >> $o
 
 	#find the line with the author name...
-	#...remove the surround html...
+	#...remove the surrounding html...
 	#...and replace the angle brackets with escape characters before writing to the output file
 	awk '/By <a href="https:\/\/www.poetryfoundation.org\/poets\// {print}' $i | \
 		sed 's/By <a[^>]*>//g' | \
@@ -28,7 +28,7 @@ while read p; do
 	echo '</author>' >> $o
 	echo '<title>' >> $o
 
-	#find the html on the line before the poem title and print the next line
+	#find the html on the line before the poem title and write the next line to the output file
 	awk '/<h1 class="c-hdgSans c-hdgSans_2 c-mix-hdgSans_inline">/ {getline; print}' $i >> $o
 
 	echo '</title>' >> $o
@@ -46,7 +46,7 @@ while read p; do
 	echo '</text>' >> $o
 	echo '</poem>' >> $o
 
-done < pages.txt
+done < res/pages.txt
 
 echo '</xml>' >> $o
 

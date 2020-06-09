@@ -1,0 +1,48 @@
+body {
+	background-color: #FFFFFF;
+	font: serif;
+	font-size: 16px;
+	padding: 0px;
+	margin: 0px;
+}
+
+a {
+	color: #4060F0;
+	text-decoration: none;
+}
+
+#poem-body, #text-container {
+	overflow: hidden;
+	transition: 0.5s;
+}
+
+#poem-container {
+	overflow: hidden;
+	margin-left: 20px;
+}
+
+#poem-body {
+	overflow: hidden;
+	margin: 0px;
+	margin-left: 20px;
+}
+
+#main-body {
+	margin-top: 50px;
+	padding: 20px;
+}
+
+#header {
+	background-color: #F0F0F0;
+	height: 50px;
+	width: 100%;
+	position: fixed;
+	top: 0px;
+}
+
+#form-wrapper {
+	margin-left: 20px;
+	height: 100%;
+	display: flex;
+	align-items: center;
+}
