@@ -75,7 +75,7 @@
 				let atLeastOneMatch = false;
 
 				for (var p = 0; p < authorList[a].poemList.length; p++) {
-					if (titleRegex.test(p.title.toLowerCase())) {
+					if (titleRegex.test(authorList[a].poemList[p].title.toLowerCase())) {
 						atLeastOneMatch = true;
 						
 						let poemBody = authorList[a].poemList[p].html.querySelector('#poem-body');
