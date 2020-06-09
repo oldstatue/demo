@@ -1,13 +1,13 @@
 body {
 	background-color: #FFFFFF;
 	font: serif;
+	font-size: 14px;
 	padding: 0px;
 	margin: 0px;
 }
 
 a {
 	color: #4060F0;
-	/*font-size: 20px;*/
 	text-decoration: none;
 }
 
@@ -30,8 +30,6 @@ a {
 #main-body {
 	margin-top: 50px;
 	padding: 20px;
-	overflow: hidden;
-	-webkit-transition: height 50s;
 }
 
 #header {

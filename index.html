@@ -2,12 +2,11 @@
 <html>
 
 <head>
-		<link rel="stylesheet" type="text/css" href="style.css" />
-		<title> Poem Demo </title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<title> Poem Demo </title>
 </head>
 
 <body>
-
 <div id="header">
 	<div id="form-wrapper">
 		<form style="display: inline; margin-right: 50px;" onsubmit="update_filters('title-search'); return false;">
@@ -24,30 +23,28 @@
 			<button type="button" onclick="clear_filters('author-search')">Clear</button>
 		</form>
 		<button type="button" style="right: 0px" onclick="clear_filters('all')">Clear All</button>
-		<p style="display: inline">4</p>
 	</div>
 </div>
 
 <div id="main-body"></div>
 
 <script type="text/javascript">
-	function debug_msg (msg) {
-		if (debugFlag) {
-			console.log(msg);
-		}
-	}
-
+	//called on submitting either of the forms
 	function update_filters (filter) {
+		//update the specified filter stirngs with the values in the form
 		if (filter == "author-search") {
 			authorFilter = document.getElementById(filter).value;
 		} else if (filter == "title-search") {
 			titleFilter = document.getElementById(filter).value;
 		}
 
+		//update the page html using the new filter strings
 		filter_poems();
 	}
 
+	//called on clicking either of the clear buttons
 	function clear_filters (filter) {
+		//clear the specified filter strings 
 		if (filter == "author-search" || filter == "all") {
 			document.getElementById("author-search").value = "";
 			authorFilter = "";
@@ -58,39 +55,50 @@
 			titleFilter = "";
 		}
 
+		//update the page html using the new filter strings
 		filter_poems();
 	}
 
+	//utility function to clear the contents of a div
 	function clearElement (element) {
 		while (element.firstChild) {
 			element.removeChild(element.firstChild);
 		}
 	}
 
+	//clears all displayed poems and adds them back to the page if they match the filters
 	function filter_poems () {
 		clearElement(mainBody);
-			
+
+		//create javascript RegExp objects based on the filters to make it easier to find matches
 		var titleRegex = RegExp(titleFilter.toLowerCase());
 		var authorRegex = RegExp(authorFilter.toLowerCase());
 
 		for (var a = 0; a < authorList.length; a++) {
+			//test the author name against the author filter
 			if (authorRegex.test(authorList[a].name.toLowerCase())) {
-				let poemDiv = authorList[a].html.querySelector("#poem-container");
-				clearElement(poemDiv);
-				poemDiv.style.height = "auto";
+				//get a reference to the div containing the author's poems, clear it, and expand it
+				let poemContainer = authorList[a].html.querySelector("#poem-container");
+				clearElement(poemContainer);
+				poemContainer.style.height = "auto";
 
 				let atLeastOneMatch = false;
 
 				for (var p = 0; p < authorList[a].poemList.length; p++) {
+					//test the poem name against the title filter
 					if (titleRegex.test(authorList[a].poemList[p].title.toLowerCase())) {
 						atLeastOneMatch = true;
 						
+						//get a reference to the div containing the poem text and collapse it
 						let poemBody = authorList[a].poemList[p].html.querySelector('#poem-body');
 						poemBody.style.height = "0px";
-						poemDiv.appendChild(authorList[a].poemList[p].html);
+
+						poemContainer.appendChild(authorList[a].poemList[p].html);
 					}
 				}
 
+				//make sure at there is at least one poem that matches the filters before adding the author to the page
+				//this prevents displaying an author name when they have no matching poems
 				if (atLeastOneMatch) {
 					mainBody.appendChild(authorList[a].html);
 				}
@@ -98,10 +106,12 @@
 		}
 	}
 
+	//iterate through the poems in the xml doc and converts them to an array of javascript objects
 	function read_xml (xmlDoc) {
 		var poems = xmlDoc.getElementsByTagName("poem");
 
 		for (var p = 0; p < poems.length; p++) {
+			//create the poem object
 			let newPoem = {
 				title: xmlDoc.getElementsByTagName("title")[p].childNodes[0].nodeValue,
 				text: xmlDoc.getElementsByTagName("text")[p].childNodes[0].nodeValue
@@ -109,8 +119,9 @@
 
 			let foundMatch = false;
 			let testName = xmlDoc.getElementsByTagName("author")[p].childNodes[0].nodeValue;  
-			
-			//check if the poem's author already exists, and if so add the poem to that author
+		
+			//check if an existing author object matches the poem's author.
+			//if a match is found, add the poem to that author's list of poem objects
 			for (var a = 0; a < authorList.length; a++) {
 				if (authorList[a].name == testName) {
 					authorList[a].poemList.push(newPoem);
@@ -118,8 +129,8 @@
 				}
 			}
 
-			//if the poet doesn't already exist, create a new poet and add the poem to them 
-			if (!foundMatch) {
+			//if the poet doesn't already exist, create a new poet and add the poem to the new poem 
+			if (!foundMatch) { 
 				let splitName = name.split(" ");
 				let lastName = splitName[splitName.length - 1].toLowerCase();
 				
@@ -130,71 +141,89 @@
 				});
 			}
 		}
-	}
 
-	function generate_html () {
+		//sort the authors and their poems alphabetically 
 		authorList = alphabetise(authorList, "lastName");
 		
 		for (var a = 0; a < authorList.length; a++) {
 			authorList[a].poemList = alphabetise(authorList[a].poemList, "title");
-
-			let newAuthDiv = document.createElement('div');
-
-			let newAuthName = document.createElement('a');
-			newAuthName.innerHTML = authorList[a].name;
-			newAuthName.href = "#";
-			newAuthName.style.textDecoration = "underline";
-			newAuthDiv.appendChild(newAuthName);
-
-			let poemDiv = document.createElement('div');
-			poemDiv.id = "poem-container";
-			poemDiv.style.height = "auto";
-			
-			newAuthName.onclick = function (e) {
-				//e.preventDefault();
-
-				if (poemDiv.style.height == "0px") {
-					poemDiv.style.height = "auto";
-				} else {	
-					poemDiv.style.height = "0px";
-				}
-			};
-			
-			for (var p = 0; p  < authorList[a].poemList.length; p++) {
-				let newPoemDiv = document.createElement('div');
-
-				let newTitle = document.createElement('a');
-				newTitle.innerHTML = authorList[a].poemList[p].title;
-				newTitle.href = "#";
-				newPoemDiv.appendChild(newTitle);
-
-				let newText = document.createElement('p');
-				newText.innerHTML = "<br />" + authorList[a].poemList[p].text;
-				newText.id = "poem-body";
-				newText.style.height = "0px";
-				newPoemDiv.appendChild(newText);
-
-				newTitle.onclick = function (e) {
-					//e.preventDefault();
-
-					if (newText.style.height == "0px") {
-						newText.style.height = newText.scrollHeight + "px";
-					} else {
-						newText.style.height = "0px";
-					}
-				}
-			
-				authorList[a].poemList[p].html = newPoemDiv;
-				poemDiv.appendChild(authorList[a].poemList[p].html);
-			}
-
-			newAuthDiv.appendChild(poemDiv);
-			newAuthDiv.appendChild(document.createElement('br'));
-			authorList[a].html = newAuthDiv;
-			mainBody.appendChild(authorList[a].html);
 		}
 	}
 
+	//iterate through the author objects and generate the html elements that will display them
+	function generate_html () {
+		for (var a = 0; a < authorList.length; a++) {
+			//create the root container div for the author
+			let authDiv = document.createElement('div');
+
+			//create the author's name
+			let authName = document.createElement('a');
+			authName.innerHTML = authorList[a].name;
+			authName.href = "#";
+			authName.style.textDecoration = "underline";
+			authDiv.appendChild(authName);
+
+			//create the container div for the list of the author's poems
+			let poemListDiv = document.createElement('div');
+			poemListDiv.id = "poem-container";
+			poemListDiv.style.height = "auto";
+			authDiv.appendChild(poemListDiv);
+
+			//expand and collpase the poem container div on clicking the author name
+			authName.onclick = function (e) {
+				if (poemListDiv.style.height == "0px") {
+					poemListDiv.style.height = "auto";
+				} else {	
+					poemListDiv.style.height = "0px";
+				}
+			};
+		
+			//iteratre through the author's list of poem objects
+			for (var p = 0; p  < authorList[a].poemList.length; p++) {
+				//create the root container div for the poem
+				let poemDiv = document.createElement('div');
+
+				//create the poem's title
+				let poemTitle = document.createElement('a');
+				poemTitle.innerHTML = authorList[a].poemList[p].title;
+				poemTitle.href = "#";
+				poemDiv.appendChild(poemTitle);
+
+				//create the poem body
+				let poemText = document.createElement('p');
+				poemText.innerHTML = "<br />" + authorList[a].poemList[p].text;
+				poemText.id = "poem-body";
+				poemText.style.height = "0px";
+				poemDiv.appendChild(poemText);
+
+				//expand and collapse the poem body div on clicking the poem title
+				poemTitle.onclick = function (e) {
+					if (poemText.style.height == "0px") {
+						poemText.style.height = poemText.scrollHeight + "px";
+					} else {
+						poemText.style.height = "0px";
+					}
+				}
+				
+				poemListDiv.appendChild(poemDiv);
+
+				//save the html as a property of the poem object
+				//this is so it can be dynamically added and removed when filtering the poems
+				authorList[a].poemList[p].html = poemDiv;
+			}
+
+			authDiv.appendChild(poemListDiv);
+			authDiv.appendChild(document.createElement('br'));
+			mainBody.appendChild(authDiv);
+			
+			//save the html as a property of the author object
+			//this is so it can be dynamically added and removed when filtering the poems
+			authorList[a].html = authDiv;
+		}
+	}
+
+	//comparison function passed to the inbuilt javascript sort() function
+	//takes a list of objects, and the name of the properties of those objects to compare
 	function alphabetise (list, property) {
 		return list.sort(function (a, b) {
 			if (a[property] > b[property]) {
@@ -207,23 +236,22 @@
 		});
 	}
 
-	var debugFlag = true;
 	var mainBody = document.getElementById('main-body');
 	var authorList = [];
 	var titleFilter = "";
 	var authorFilter = "";
 
-	debug_msg("Requesting XML");
+	//request the xml document...
 	var xmlReq = new XMLHttpRequest();
 	xmlReq.open("GET", "./log.xml", true);
 	xmlReq.send();
+
+	//...and once it's loaded call the functions to read the poem data and create the html
 	xmlReq.onload = function () {
-		debug_msg("XML loaded succesfully");
 		read_xml(xmlReq.responseXML);
 		generate_html();
 	}
 </script>
-
 </body>
 
 </html>
