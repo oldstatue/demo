@@ -68,7 +68,9 @@
 
 		for (var a = 0; a < authorList.length; a++) {
 			if (authorRegex.test(authorList[a].name.toLowerCase())) {
+				console.log(authorList[a].html);
 				let poemDiv = authorList[a].html.querySelector('#poem-container');
+				console.log(poemDiv);
 				poemDiv.innerHTML = "";
 				poemDiv.style.height = "auto";
 
@@ -168,7 +170,7 @@
 				newText.style.height = "0px";
 				newPoemDiv.appendChild(newText);
 
-				newTitle.onclick = function () {
+				newTitle.onclick = function (e) {
 					e.preventDefault();
 
 					if (newText.style.height == "0px") {
