@@ -30,6 +30,12 @@
 <div id="main-body"></div>
 
 <script type="text/javascript">
+	var debugFlag = true;
+	var mainBody = document.getElementById('main-body');
+	var authorList = [];
+	var titleFilter = "";
+	var authorFilter = "";
+	
 	function debug_msg (msg) {
 		if (debugFlag) {
 			console.log(msg);
@@ -60,9 +66,15 @@
 		filter_poems();
 	}
 
-	function filter_poems () {
-		mainBody.innerHTML = "";
+	function clearElement (element) {
+		while (element.firstChild) {
+			element.removeChild(element.firstChild);
+		}
+	}
 
+	function filter_poems () {
+		clearElement(mainBody);
+			
 		var titleRegex = RegExp(titleFilter.toLowerCase());
 		var authorRegex = RegExp(authorFilter.toLowerCase());
 
@@ -73,7 +85,7 @@
 				
 				let poemDiv = authorList[a].html.querySelector("#poem-container");
 				console.log(poemDiv);
-				poemDiv.innerHTML = "";
+				clearElement(poemDiv);
 				poemDiv.style.height = "auto";
 
 				let atLeastOneMatch = false;
@@ -85,7 +97,6 @@
 						let poemBody = authorList[a].poemList[p].html.querySelector('#poem-body');
 						poemBody.style.height = "0px";
 						poemDiv.appendChild(authorList[a].poemList[p].html);
-						
 					}
 				}
 
