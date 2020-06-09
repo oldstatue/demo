@@ -10,21 +10,21 @@
 
 <div id="header">
 	<div id="form-wrapper">
-		<form style="display: inline; margin-right: 50px;" onsubmit="update_filters('title-search')">
+		<form style="display: inline; margin-right: 50px;" onsubmit="update_filters('title-search'); e.preventDefault()">
 			<p style="display: inline;">Search by title: </p>
 			<input type="text" id="title-search">
 			<button>Search</button>
 			<button type="button" onclick="clear_filters('title-search')">Clear</button>
 		</form>
 
-		<form style="display: inline; margin-right: 50px" onsubmit="update_filters('author-search')">
+		<form style="display: inline; margin-right: 50px" onsubmit="update_filters('author-search'); e.preventDefault()">
 			<p style="display: inline;">Search by poet: </p>
 			<input type="text" id="author-search">
 			<button>Search</button>
 			<button type="button" onclick="clear_filters('author-search')">Clear</button>
 		</form>
 		<button type="button" style="right: 0px" onclick="clear_filters('all')">Clear All</button>
-		<p style="display: inline">2</p>
+		<p style="display: inline">3</p>
 	</div>
 </div>
 
@@ -75,11 +75,7 @@
 
 		for (var a = 0; a < authorList.length; a++) {
 			if (authorRegex.test(authorList[a].name.toLowerCase())) {
-				console.log(authorList[a]);
-				console.log(authorList[a].html);
-				
 				let poemDiv = authorList[a].html.querySelector("#poem-container");
-				console.log(poemDiv);
 				clearElement(poemDiv);
 				poemDiv.style.height = "auto";
 
@@ -194,9 +190,7 @@
 
 			newAuthDiv.appendChild(poemDiv);
 			newAuthDiv.appendChild(document.createElement('br'));
-			console.log("generate new auth div:", newAuthDiv);
 			authorList[a].html = newAuthDiv;
-			console.log("new author list html:", authorList[a].html);
 			mainBody.appendChild(authorList[a].html);
 		}
 	}
