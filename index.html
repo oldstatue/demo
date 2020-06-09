@@ -12,14 +12,14 @@
 	<div id="form-wrapper">
 		<form style="display: inline; margin-right: 50px;">
 			<p style="display: inline;">Search by title: </p>
-			<input type="text" id="title-search"></input>
+			<input type="text" id="title-search">
 			<button onclick="update_filters('title-search')">Search</button>
 			<button onclick="clear_filters('title-search')">Clear</button>
 		</form>
 
 		<form style="display: inline; margin-right: 50px">
 			<p style="display: inline;">Search by poet: </p>
-			<input type="text" id="author-search"></input>
+			<input type="text" id="author-search">
 			<button onclick="update_filters('author-search')">Search</button>
 			<button onclick="clear_filters('author-search')">Clear</button>
 		</form>
@@ -66,27 +66,27 @@
 		var titleRegex = RegExp(titleFilter.toLowerCase());
 		var authorRegex = RegExp(authorFilter.toLowerCase());
 
-		for (var a of authorList) {
-			if (authorRegex.test(a.name.toLowerCase())) {
-				let poemDiv = a.html.querySelector('#poem-container');
+		for (var a = 0; a < authorList.length; i++) {
+			if (authorRegex.test(authorList[a].name.toLowerCase())) {
+				let poemDiv = authorList[a].html.querySelector('#poem-container');
 				poemDiv.innerHTML = "";
 				poemDiv.style.height = "auto";
 
 				let atLeastOneMatch = false;
 
-				for (var p of a.poemList) {
+				for (var p = 0; p < authorList[a].poemList.length; p++) {
 					if (titleRegex.test(p.title.toLowerCase())) {
 						atLeastOneMatch = true;
 						
-						let poemBody = p.html.querySelector('#poem-body');
+						let poemBody = authorList[a].poemList[p].html.querySelector('#poem-body');
 						poemBody.style.height = "0px";
-						poemDiv.appendChild(p.html);
+						poemDiv.appendChild(authorList[a].poemList[p].html);
 						
 					}
 				}
 
 				if (atLeastOneMatch) {
-					mainBody.appendChild(a.html);
+					mainBody.appendChild(authorList[a].html);
 				}
 			}
 		}
@@ -95,19 +95,19 @@
 	function read_xml (xmlDoc) {
 		var poems = xmlDoc.getElementsByTagName("poem");
 
-		for (var i = 0; i < poems.length; i ++) {
+		for (var p = 0; p < poems.length; p++) {
 			let newPoem = {
-				title: xmlDoc.getElementsByTagName("title")[i].childNodes[0].nodeValue,
-				text: xmlDoc.getElementsByTagName("text")[i].childNodes[0].nodeValue
+				title: xmlDoc.getElementsByTagName("title")[p].childNodes[0].nodeValue,
+				text: xmlDoc.getElementsByTagName("text")[p].childNodes[0].nodeValue
 			}
 
 			let foundMatch = false;
-			let testName = xmlDoc.getElementsByTagName("author")[i].childNodes[0].nodeValue;  
-
+			let testName = xmlDoc.getElementsByTagName("author")[p].childNodes[0].nodeValue;  
+			
 			//check if the poem's author already exists, and if so add the poem to that author
-			for (var a of authorList) {
-				if (a.name == testName) {
-					a.poemList.push(newPoem);
+			for (var a = 0; a < authorList.length; a++) {
+				if (authorList[a].name == testName) {
+					authorList[a].poemList.push(newPoem);
 					foundMatch = true;
 				}
 			}
@@ -129,13 +129,13 @@
 	function generate_html () {
 		authorList = alphabetise(authorList, "lastName");
 		
-		for (var a of authorList) {
-			a.poemList = alphabetise(a.poemList, "title");
+		for (var a = 0; a < authorList.length; a++) {
+			authorList[a].poemList = alphabetise(authorList[a].poemList, "title");
 
 			let newAuthDiv = document.createElement('div');
 
 			let newAuthName = document.createElement('a');
-			newAuthName.innerHTML = a.name;
+			newAuthName.innerHTML = authorList[a].name;
 			newAuthName.href = "#";
 			newAuthName.style.textDecoration = "underline";
 			newAuthDiv.appendChild(newAuthName);
@@ -152,16 +152,16 @@
 				}
 			};
 			
-			for (var p of a.poemList) {
+			for (var p = 0; p  < authorList[a].poemList.length; p++) {
 				let newPoemDiv = document.createElement('div');
 
 				let newTitle = document.createElement('a');
-				newTitle.innerHTML = p.title;
+				newTitle.innerHTML = authorList[a].poemList[p].title;
 				newTitle.href = "#";
 				newPoemDiv.appendChild(newTitle);
 
 				let newText = document.createElement('p');
-				newText.innerHTML = "<br />" + p.text;
+				newText.innerHTML = "<br />" + authorList[a].poemList[p].text;
 				newText.id = "poem-body";
 				newText.style.height = "0px";
 				newPoemDiv.appendChild(newText);
@@ -174,14 +174,14 @@
 					}
 				}
 			
-				p.html = newPoemDiv;
-				poemDiv.appendChild(p.html);
+				authorList[a].poemList[p].html = newPoemDiv;
+				poemDiv.appendChild(authorList[a].poemList[p].html);
 			}
 
 			newAuthDiv.appendChild(poemDiv);
 			newAuthDiv.appendChild(document.createElement('br'));
-			a.html = newAuthDiv;
-			mainBody.appendChild(a.html);
+			authorList[a].html = newAuthDiv;
+			mainBody.appendChild(authorList[a].html);
 		}
 	}
 
