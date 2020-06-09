@@ -10,20 +10,21 @@
 
 <div id="header">
 	<div id="form-wrapper">
-		<form style="display: inline; margin-right: 50px;">
+		<form style="display: inline; margin-right: 50px;" onsubmit="update_filters('title-search')">
 			<p style="display: inline;">Search by title: </p>
 			<input type="text" id="title-search">
-			<button onclick="update_filters('title-search'); e.preventDefault();">Search</button>
-			<button onclick="clear_filters('title-search'); e.preventDefault();">Clear</button>
+			<button>Search</button>
+			<button type="button" onclick="clear_filters('title-search')">Clear</button>
 		</form>
 
-		<form style="display: inline; margin-right: 50px">
+		<form style="display: inline; margin-right: 50px" onsubmit="update_filters('author-search')">
 			<p style="display: inline;">Search by poet: </p>
 			<input type="text" id="author-search">
-			<button onclick="update_filters('author-search'); e.preventDefault();">Search</button>
-			<button onclick="clear_filters('author-search'); e.preventDefault();">Clear</button>
+			<button type="button" onclick="update_filters('author-search')">Search</button>
+			<button type="button" onclick="clear_filters('author-search')">Clear</button>
 		</form>
-		<button style="right: 0px" onclick="clear_filters('all'); e.preventDefault();">Clear All</button><p style="display: inline">1</p>
+		<button type="button" style="right: 0px" onclick="clear_filters('all')">Clear All</button>
+		<p style="display: inline">2</p>
 	</div>
 </div>
 
