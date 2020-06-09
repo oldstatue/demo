@@ -144,7 +144,9 @@
 			poemDiv.id = "poem-container";
 			poemDiv.style.height = "auto";
 			
-			newAuthName.onclick = function () {
+			newAuthName.onclick = function (e) {
+				e.preventDefault();
+
 				if (poemDiv.style.height == "0px") {
 					poemDiv.style.height = "auto";
 				} else {	
@@ -167,6 +169,8 @@
 				newPoemDiv.appendChild(newText);
 
 				newTitle.onclick = function () {
+					e.preventDefault();
+
 					if (newText.style.height == "0px") {
 						newText.style.height = newText.scrollHeight + "px";
 					} else {
