@@ -66,7 +66,7 @@
 		var titleRegex = RegExp(titleFilter.toLowerCase());
 		var authorRegex = RegExp(authorFilter.toLowerCase());
 
-		for (var a = 0; a < authorList.length; i++) {
+		for (var a = 0; a < authorList.length; a++) {
 			if (authorRegex.test(authorList[a].name.toLowerCase())) {
 				let poemDiv = authorList[a].html.querySelector('#poem-container');
 				poemDiv.innerHTML = "";
