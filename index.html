@@ -186,7 +186,9 @@
 
 			newAuthDiv.appendChild(poemDiv);
 			newAuthDiv.appendChild(document.createElement('br'));
+			console.log("generate new auth div:", newAuthDiv);
 			authorList[a].html = newAuthDiv;
+			console.log("new author list html:", authorList[a].html);
 			mainBody.appendChild(authorList[a].html);
 		}
 	}
