@@ -70,7 +70,8 @@
 			if (authorRegex.test(authorList[a].name.toLowerCase())) {
 				console.log(authorList[a]);
 				console.log(authorList[a].html);
-				let poemDiv = authorList[a].html.querySelector('#poem-container');
+				
+				let poemDiv = authorList[a].html.querySelector("#poem-container");
 				console.log(poemDiv);
 				poemDiv.innerHTML = "";
 				poemDiv.style.height = "auto";
