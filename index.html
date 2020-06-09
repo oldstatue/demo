@@ -23,19 +23,13 @@
 			<button onclick="update_filters('author-search')">Search</button>
 			<button onclick="clear_filters('author-search')">Clear</button>
 		</form>
-		<button style="right: 0px" onclick="clear_filters('all')">Clear All</button>
+		<button style="right: 0px" onclick="clear_filters('all')">Clear All</button><p style="display: inline">0.0</p>
 	</div>
 </div>
 
 <div id="main-body"></div>
 
 <script type="text/javascript">
-	var debugFlag = true;
-	var mainBody = document.getElementById('main-body');
-	var authorList = [];
-	var titleFilter = "";
-	var authorFilter = "";
-	
 	function debug_msg (msg) {
 		if (debugFlag) {
 			console.log(msg);
@@ -160,7 +154,7 @@
 			poemDiv.style.height = "auto";
 			
 			newAuthName.onclick = function (e) {
-				e.preventDefault();
+				//e.preventDefault();
 
 				if (poemDiv.style.height == "0px") {
 					poemDiv.style.height = "auto";
@@ -184,7 +178,7 @@
 				newPoemDiv.appendChild(newText);
 
 				newTitle.onclick = function (e) {
-					e.preventDefault();
+					//e.preventDefault();
 
 					if (newText.style.height == "0px") {
 						newText.style.height = newText.scrollHeight + "px";
