@@ -45,6 +45,7 @@ while read p; do
 	echo '</text>' >> $o
 	echo '</poem>' >> $o
 
+	#clear leading whitespace
 	sed -i 's/ *//' $o
 done < $i
 
