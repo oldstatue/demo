@@ -45,7 +45,7 @@ while read p; do
 	echo '</text>' >> $o
 	echo '</poem>' >> $o
 
-	sed -i 's/ *//' $o
+	sed 's/ *//' $o | 's/\r//g' >> $o
 done < $i
 
 echo '</xml>' >> $o
