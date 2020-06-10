@@ -40,7 +40,7 @@ while read p; do
 	#...replace the angle brackets with escape characters and remove carriage returns before writing to the output file
 	awk '/<div style="text-indent: -1em; padding-left: 1em;">/ {split($0,a,"</div>")} END {for (i in a) {print a [i]}}' $t | \
 		sed 's/<div style=\"text-indent: -1em; padding-left: 1em;\">//' | \
-		sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/\xe2\xa0//g' >> $o
+		sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/\r//g' >> $o
 
 	echo '</text>' >> $o
 	echo '</poem>' >> $o
