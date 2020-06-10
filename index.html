@@ -78,11 +78,11 @@
 			//test the author name against the author filter
 			if (authorRegex.test(authorList[a].name.toLowerCase())) {
 				//get a reference to the div containing the author's poems, clear it, and expand it
-				let poemContainer = authorList[a].html.querySelector("#poem-container");
+				var poemContainer = authorList[a].html.querySelector("#poem-container");
 				clearElement(poemContainer);
 				poemContainer.style.height = "auto";
 
-				let atLeastOneMatch = false;
+				var atLeastOneMatch = false;
 
 				for (var p = 0; p < authorList[a].poemList.length; p++) {
 					//test the poem name against the title filter
@@ -90,7 +90,7 @@
 						atLeastOneMatch = true;
 						
 						//get a reference to the div containing the poem text and collapse it
-						let poemBody = authorList[a].poemList[p].html.querySelector('#poem-body');
+						var poemBody = authorList[a].poemList[p].html.querySelector('#poem-body');
 						poemBody.style.height = "0px";
 
 						poemContainer.appendChild(authorList[a].poemList[p].html);
@@ -106,21 +106,21 @@
 		}
 	}
 
-	//iterate through the poems in the xml doc and converts them to an array of javascript objects
+	//iterate through the poems in the xml doc and convert them to an array of javascript objects
 	function read_xml (xmlDoc) {
 		var poems = xmlDoc.getElementsByTagName("poem");
 
 		for (var p = 0; p < poems.length; p++) {
 			//create the poem object
-			let newPoem = {
+			var newPoem = {
 				title: xmlDoc.getElementsByTagName("title")[p].childNodes[0].nodeValue,
 				text: xmlDoc.getElementsByTagName("text")[p].childNodes[0].nodeValue
 			}
 
-			let foundMatch = false;
-			let testName = xmlDoc.getElementsByTagName("author")[p].childNodes[0].nodeValue;  
-		
-			//check if an existing author object matches the poem's author.
+			var foundMatch = false;
+			var testName = xmlDoc.getElementsByTagName("author")[p].childNodes[0].nodeValue;  
+	
+			//check if an existing author object matches the poem's author
 			//if a match is found, add the poem to that author's list of poem objects
 			for (var a = 0; a < authorList.length; a++) {
 				if (authorList[a].name == testName) {
@@ -129,24 +129,20 @@
 				}
 			}
 
-			//if the author doesn't already exist, create a new author and add the poem to the new poem 
-			if (!foundMatch) { 
-				let splitName = name.split(" ");
-				let lastName = splitName[splitName.length - 1].toLowerCase();
-				
+			//if the author doesn't already exist, create a new author and add the poem to the new author 
+			if (!foundMatch) {
 				authorList.push({
 					name: testName,
-					lastName: lastName,
 					poemList: [newPoem]
 				});
 			}
 		}
 
 		//sort the authors and their poems alphabetically 
-		authorList = alphabetise(authorList, "lastName");
+		authorList = alphabetise(authorList, "name", format_last_name);
 		
 		for (var a = 0; a < authorList.length; a++) {
-			authorList[a].poemList = alphabetise(authorList[a].poemList, "title");
+			authorList[a].poemList = alphabetise(authorList[a].poemList, "title", format_title);
 		}
 	}
 
@@ -222,18 +218,40 @@
 		}
 	}
 
-	//comparison function passed to the inbuilt javascript sort() function
-	//takes a list of objects, and the name of the properties of those objects to compare
-	function alphabetise (list, property) {
+	//wrapper for the inbuilt javascript sort() function
+	//takes a list of objects, the name of the properties of those objects to compare, and a function to format the strings before comparison
+	function alphabetise (list, property, formatFunc) {
 		return list.sort(function (a, b) {
-			if (a[property] > b[property]) {
+			a = formatFunc(a[property]);
+			b = formatFunc(b[property]);
+			
+			if (a > b) {
 				return 1;
-			} else if (b[property] > a[property]) {
+			} else if (b > a) {
 				return -1;
 			} 
 			
 			return 0;
 		});
+	}
+
+	//converts an author name to a string with the last name only, in lowercase
+	function format_last_name (name) {
+		var splitName = name.split(" ");
+		return splitName[splitName.length - 1].toLowerCase();
+	}
+
+	//returns the title with any 'a', "an" or "the"'s remove from the start
+	function format_title (title) {
+		var noNewLineTitle = title.replace(/\n/g, "");
+		var splitTitle = noNewLineTitle.split(" ");
+		var firstWord = splitTitle[0].toLowerCase();
+		
+		if (firstWord == "a" || firstWord == "an" || firstWord == "the") {
+			return splitTitle.slice(1).join(' ');
+		}
+
+		return noNewLineTitle;
 	}
 
 	var mainBody = document.getElementById('main-body');
