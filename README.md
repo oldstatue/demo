@@ -10,4 +10,6 @@ There are two main parts to this project, each handled by a separate file:
 
 1. The webpage, [**`index.html`**](https://github.com/oldstatue/demo/blob/master/index.html), then uses JavaScript to parse the XML document into a JavaScript object, sort the lists of authors and poems, and display the data as HTML. The page also allows you to search by poem title and author name, and the JavaScript dynamically updates the HTML to match the search criteria.
 
-The individual files are also commented throughout with more detailed explanations of how they work.  
+The individual files are also commented throughout with more detailed explanations of how they work. 
+
+![Screenshot](res/screen.png) 
