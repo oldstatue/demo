@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#input file (given as an argument when running the script) 
+#input file 
 i=res/pages.txt
 
 #temporary html file to process

@@ -3,7 +3,7 @@
 
 <head>
 <link rel="stylesheet" type="text/css" href="res/style.css" />
-<title>Demo Project</title>
+<title>AST Demo Project</title>
 </head>
 
 <body>
@@ -235,13 +235,13 @@
 		});
 	}
 
-	//converts an author name to a string with the last name only, in lowercase
+	//converts an author name to a string containing the last name only, in lowercase
 	function format_last_name (name) {
 		var splitName = name.split(" ");
 		return splitName[splitName.length - 1].toLowerCase();
 	}
 
-	//returns the title with any 'a', "an" or "the"'s remove from the start
+	//returns the title with any "a", "an" or "the"'s removed from the start
 	function format_title (title) {
 		var noNewLineTitle = title.replace(/\n/g, "");
 		var splitTitle = noNewLineTitle.split(" ");
